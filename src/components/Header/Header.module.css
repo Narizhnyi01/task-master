@@ -1,0 +1,32 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #5E595E;
+  }
+  
+  .logo {
+    height: 75px;
+    width: auto;
+  }
+  .input {
+    width: 100%;
+    max-width: 440px;
+    height: 61px;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 70px;
+  }
+  .button {
+    margin-left: 20px;
+  }
+  .taskIcon {
+    margin-left: 12px;
+    width: 38px;
+    height: 38px;
+  }
+  .title {
+    font-weight: 400;
+    font-size: 38px;
+    margin: 0;
+  }

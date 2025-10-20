@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useGetTaskListsQuery } from './services/api'
+import { Header } from './components/Header/Header'
+import { selectDoneTasks, selectInProgressTasks, selectTodoTasks, setTasks } from './store/tasksSlice'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { TaskList } from './components/TaskList/TaskList'
+import { TaskStatusEnum } from './enums/app'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { data, isLoading, error } = useGetTaskListsQuery()
+  const dispatch = useDispatch()
+
+  const todoTasks = useSelector(selectTodoTasks)
+  const inProgressTasks = useSelector(selectInProgressTasks)
+  const doneTasks = useSelector(selectDoneTasks)
+
+  useEffect(() => {
+    if (data) dispatch(setTasks(data))
+  }, [data, dispatch])
+
+  if (isLoading) return <p>Загрузка...</p>
+  if (error) return <p>Ошибка загрузки</p>
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="">
+      <Header />
+      <div className="container">
+        <div className="flex jcsb">
+          <TaskList title="To do" status={TaskStatusEnum.TODO} tasks={todoTasks} />
+          <TaskList title="Doing" status={TaskStatusEnum.IN_PROGRESS} tasks={inProgressTasks} />
+          <TaskList title="Done" status={TaskStatusEnum.DONE} tasks={doneTasks} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
-
-export default App
