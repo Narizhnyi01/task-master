@@ -1,0 +1,40 @@
+.editPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.editPopupContent {
+    max-width: 500px;
+    width: 90%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+.editPopupContentHeader {
+    color: #000;
+}
+
+.editPopupContentInput {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.editPopupContentFooter {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
