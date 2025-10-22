@@ -8,6 +8,7 @@ import { TaskStatusEnum } from '../../enums/app'
 import { useSelector } from 'react-redux'
 import { selectTodoTasks } from '../../store/tasksSlice'
 import { getNextIndexForColumn } from '../../utils/taskIndexUtils'
+import { toast } from 'react-toastify'
 
 export const Header = () => {
   const [addTask, { isLoading }] = useAddTaskMutation()
@@ -16,10 +17,17 @@ export const Header = () => {
 
   const handleAddTask = async () => {
     if (text.trim() === '') return
-    // Вычисляем правильный индекс перед отправкой
-    const nextIndex = getNextIndexForColumn(todoTasks, TaskStatusEnum.TODO)
-    await addTask({ text: text, createdAt: new Date(), index: nextIndex, status: TaskStatusEnum.TODO })
-    setText('')
+    
+    try {
+      // Вычисляем правильный индекс перед отправкой
+      const nextIndex = getNextIndexForColumn(todoTasks, TaskStatusEnum.TODO)
+      await addTask({ text: text, createdAt: new Date(), index: nextIndex, status: TaskStatusEnum.TODO }).unwrap()
+      // Очищаем input только при успехе
+      setText('')
+    } catch (error) {
+      console.error('Error adding task:', error)
+      toast.error('Failed to add task. Please try again.')
+    }
   }
   return (
     <header className={styles.header}>
@@ -27,7 +35,18 @@ export const Header = () => {
             <div className="flex aic jcsb">
                 <div className="flex aic fg-1">
                   <img src={logoImg} alt="Logo" className={styles.logo} />
-                  <input className={styles.input} type="text" placeholder="Add new task" value={text} onChange={(e) => setText(e.target.value)} />
+                  <input 
+                    className={styles.input} 
+                    type="text" 
+                    placeholder="Add new task" 
+                    value={text} 
+                    onChange={(e) => setText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !isLoading) {
+                        handleAddTask()
+                      }
+                    }}
+                  />
                   <Button text={isLoading ? '∞' : '+'} onClick={handleAddTask} disabled={text.trim() === '' || isLoading} />
                 </div>
                 <div className="flex aic">
