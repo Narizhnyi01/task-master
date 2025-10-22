@@ -43,7 +43,7 @@ export const api = createApi({
     }),
     addTask: builder.mutation<Omit<Task, 'id'>, Omit<Task, 'id'>>({
       query: (task) => ({
-        url: 'task-list1',
+        url: 'task-list',
         method: 'POST',
         body: task,
       }),

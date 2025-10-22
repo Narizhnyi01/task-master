@@ -6,6 +6,7 @@ import { Button } from '../Button/Button'
 import { EditPopup } from '../EditPopup/EditPopup'
 import { ConfirmPopup } from '../ConfirmPopup/ConfirmPopup'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import type { DraggableSyntheticListeners } from '@dnd-kit/core'
 
 interface TaskItemProps extends Task {
@@ -24,8 +25,8 @@ export const TaskItem = ({ dragListeners, ...task }: TaskItemProps) => {
     try {
       await deleteTask(task.id).unwrap()
       setIsConfirming(false)
-    } catch (err) {
-      console.error('Error deleting task:', err)
+    } catch {
+      toast.error('Failed to delete task')
     }
   }
 
@@ -35,8 +36,8 @@ export const TaskItem = ({ dragListeners, ...task }: TaskItemProps) => {
   const handleUpdate = async (text: string) => {
     try {
       await updateTask({ id: task.id, text }).unwrap()
-    } catch (err) {
-      console.error('Error updating task:', err)
+    } catch {
+      toast.error('Failed to update task')
     } finally {
       handleToggleEdit()
     }
