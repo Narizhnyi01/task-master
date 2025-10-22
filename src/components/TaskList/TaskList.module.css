@@ -4,6 +4,7 @@
     border-radius: 10px;
     width: calc((100% - 168px) / 3);
     margin-top: 50px;
+    margin-bottom: 50px;
     border: 2px dashed transparent;
     transition: all 0.3s ease;
 }
